@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package blog;
 
-option go_package = "build/gen";
+option go_package = "/genproto";
 
 import "blog.proto";
 
