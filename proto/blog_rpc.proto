@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package blog;
+
+option go_package = "build/gen";
+
+import "blog.proto";
+
+service BlogService {
+    rpc FetchAllArticles(FetchAllArticlesRequest) returns (FetchAllArticlesResponse) {}
+
+    rpc FetchArticleById(FetchArticleByIdRequest) returns (FetchArticleByIdResponse) {}
+
+    rpc AddArticle(AddArticleRequest) returns (AddArticleResponse) {}
+
+    rpc DeleteArticle(DeleteArticleRequest) returns (DeleteArticleResponse) {}
+}
+
+message FetchAllArticlesRequest {
+    string request_id = 1;
+}
+
+message FetchAllArticlesResponse {
+    repeated Article articles = 1;
+}
+
+message FetchArticleByIdRequest {
+    string article_id = 1;
+}
+
+message FetchArticleByIdResponse {
+    Article article = 1;
+}
+
+message AddArticleRequest {
+    string article_name = 1;
+    string article_content = 2;
+}
+
+message AddArticleResponse {
+    bool is_succesful = 1;
+}
+
+message DeleteArticleRequest {
+    int64 article_id = 1;
+}
+
+message DeleteArticleResponse {
+    bool is_succesful = 1;
+}
