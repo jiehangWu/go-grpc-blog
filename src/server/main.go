@@ -5,22 +5,35 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/jiehangWu/go-grpc-blog/proto/genproto"
+	pb "go-grpc-blog/proto/genproto"
 
 	"google.golang.org/grpc"
 )
 
 const (
-	defaultPort = "5000"
+	defaultPort = ":3000"
 )
 
+type blogServiceServer struct {
+	pb.UnimplementedBlogServiceServer
+}
+
 func main() {
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
+	port := defaultPort
+
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	port := defaultPort
+
 	grpcServer := grpc.NewServer()
-	pb.RegisterBlogServiceServer(grpcServer, newServer())
-	grpcServer.Serve(lis)
+	srv := &blogServiceServer{}
+	pb.RegisterBlogServiceServer(grpcServer, srv)
+
+	fmt.Println("Port is listening ...")
+
+	err = grpcServer.Serve(lis)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
 }
